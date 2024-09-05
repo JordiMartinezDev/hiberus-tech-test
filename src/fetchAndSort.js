@@ -4,6 +4,8 @@ async function fetchAndSort() {
   return sortedBreeds;
 }
 
+// Fetching logic outside the main function
+
 async function fetchBreeds() {
   const response = await fetch("https://catfact.ninja/breeds");
   const data = await response.json();
@@ -11,11 +13,14 @@ async function fetchBreeds() {
 }
 
 function sortBreedsByPattern(breeds) {
+  //flag preset to start the loop, until no swaps are needed
   let hasSwapped = true;
 
   while (hasSwapped) {
-    hasSwapped = false; // Assume no swaps will be made
+    // Assuming no swaps will be made, checking later
+    hasSwapped = false;
 
+    //breeds.length - 1 to avoid breeds[ i + 1 ] being undefined
     for (let i = 0; i < breeds.length - 1; i++) {
       let currentBreed = breeds[i];
       let nextBreed = breeds[i + 1];
@@ -24,10 +29,11 @@ function sortBreedsByPattern(breeds) {
       const shouldSwap = shouldSwapBreeds(currentBreed, nextBreed);
 
       if (shouldSwap) {
-        // Swap the breeds
         breeds[i] = nextBreed;
         breeds[i + 1] = currentBreed;
-        hasSwapped = true; // Since a swap was made, we need to check again
+
+        // Since a swap was made, we need to continue checking
+        hasSwapped = true;
       }
     }
   }
@@ -35,12 +41,11 @@ function sortBreedsByPattern(breeds) {
   return breeds;
 }
 
-// Helper function to determine if two breeds should be swapped
 function shouldSwapBreeds(currentBreed, nextBreed) {
   const currentPattern = currentBreed.pattern;
   const nextPattern = nextBreed.pattern;
 
-  // Alphabetical order for non-empty patterns
+  // Alphabetical order ( ASCII codes )
   if (currentPattern > nextPattern) {
     return true;
   }
